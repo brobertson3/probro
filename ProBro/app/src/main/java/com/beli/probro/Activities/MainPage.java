@@ -1,12 +1,15 @@
 package com.beli.probro.Activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +23,7 @@ import com.beli.probro.Adapter.TaskAdapter;
 import com.beli.probro.Databases.MySQLiteHelper;
 import com.beli.probro.Databases.TaskDataSource;
 import com.beli.probro.Databases.Tasks;
+import com.beli.probro.Fragments.CreateNewFragment;
 import com.beli.probro.R;
 
 import java.util.List;
@@ -33,10 +37,10 @@ public class MainPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+            fragmentTransaction.add(R.id.container, new PlaceholderFragment()).commit();
         }
     }
 
@@ -55,10 +59,12 @@ public class MainPage extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         datasource = new TaskDataSource(this);
         datasource.open();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         //Get the current instance of this list adapter
         ListView lv = (ListView) findViewById(android.R.id.list);
-        Tasks newTask = null;
+//        Tasks newTask = null;
 
         TaskAdapter taskAdapter = null;
 
@@ -67,12 +73,16 @@ public class MainPage extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if(id == R.id.new_task) {
-            newTask = datasource.createTask("Eat");
-            taskAdapter = (TaskAdapter) lv.getAdapter();
-            taskAdapter.add(newTask);
+            fragmentTransaction.replace(R.id.container, new CreateNewFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            //Needs to go inside of the new fragment
+//            newTask = datasource.createTask("Eat", 12);
+//            taskAdapter = (TaskAdapter) lv.getAdapter();
+//            taskAdapter.add(newTask);
         }
 
-        taskAdapter.notifyDataSetChanged();
+//        taskAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,15 @@ public class TaskDataSource {
         dbHelper.close();
     }
 
-    public Tasks createTask(String task) {
+    public Tasks createTask(String task, int totalTime) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_ACTIVITY, task);
+        values.put(MySQLiteHelper.COLUMN_TOTAL_TIME, totalTime);
         //TODO Need to add puts for the other 3 columns...also need to be added to the parameters
         //This inserts a row into the database
         long insertId = database.insert(MySQLiteHelper.TABLE_NAME, null,
                 values);
-        //query the database and return all columns of the row that it to be inserted???
+        //query the database and return all columns of the row that are to be inserted???
         Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
@@ -78,6 +80,7 @@ public class TaskDataSource {
         Tasks task = new Tasks();
         task.setId(cursor.getLong(0));
         task.setTask(cursor.getString(1));
+        task.setTotalTime(cursor.getInt(2));
         return task;
     }
 

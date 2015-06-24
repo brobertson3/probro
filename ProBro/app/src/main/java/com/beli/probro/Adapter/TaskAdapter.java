@@ -1,6 +1,7 @@
 package com.beli.probro.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.beli.probro.Databases.Tasks;
 import com.beli.probro.R;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -51,7 +54,11 @@ public class TaskAdapter extends ArrayAdapter<Tasks> {
             vi = inflater.inflate(R.layout.task_list_item, null);
 
         TextView text = (TextView) vi.findViewById(R.id.task_name);
-        text.setText(data.get(position).toString());
+        text.setText(data.get(position).getTask().toString());
+        TextView textTime = (TextView) vi.findViewById(R.id.total_time);
+//        textTime.setText(data.get(position).getTotalTime());
+        textTime.setText(String.valueOf(data.get(position).getTotalTime()));
+//        Log.d("PROBRO", data.toString());
 //        text.setText(data[position]);
         return vi;
     }
