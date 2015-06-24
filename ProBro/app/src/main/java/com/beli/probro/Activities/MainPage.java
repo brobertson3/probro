@@ -96,9 +96,31 @@ public class MainPage extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
+//        @Override
+//        public void onActivityCreated(Bundle savedInstanceState) {
+//            super.onActivityCreated(savedInstanceState);
+//
+//            //Create new datasource object then open database to work with it
+//            datasource = new TaskDataSource(getActivity());
+//            datasource.open();
+//            //Get all tasks already in database and put in list
+//            List<Tasks> values = datasource.getAllTasks();
+//
+//            TaskAdapter adapter = new TaskAdapter(getActivity(), values);
+//            setListAdapter(adapter);
+//        }
+
         @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            return super.onCreateView(inflater, container, savedInstanceState);
+//            view = inflater.inflate(R.layout.fragment_, container, false);
+//            return view;
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
 
             //Create new datasource object then open database to work with it
             datasource = new TaskDataSource(getActivity());

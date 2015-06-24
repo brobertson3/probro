@@ -1,6 +1,8 @@
 package com.beli.probro.Fragments;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.beli.probro.Activities.MainPage;
 import com.beli.probro.Databases.TaskDataSource;
 import com.beli.probro.Databases.Tasks;
 import com.beli.probro.R;
@@ -90,14 +93,29 @@ public class CreateNewFragment extends Fragment implements View.OnClickListener 
                 datasource = new TaskDataSource(getActivity());
                 datasource.open();
 
-                etTask = (EditText) v.findViewById(R.id.edit_text_task);
+                etTask = (EditText) getView().findViewById(R.id.edit_text_task);
                 taskValue = etTask.getText().toString();
 
-                etTime = (EditText) v.findViewById(R.id.edit_text_time);
+                etTime = (EditText) getView().findViewById(R.id.edit_text_time);
                 timeValue = Integer.valueOf(etTime.getText().toString());
 
                 //TODO Return this value to the MainPage taskAdapter in OnOptionsItemSelected()
                 newTask = datasource.createTask(taskValue, timeValue);
+
+                //Replace the fragment now with the listview fragment
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment mainFragment = new MainPage.PlaceholderFragment();
+
+//                Bundle args = new Bundle();
+//                args.putParcelable("newTask", newTask);
+//                mainFragment.setArguments(args);
+
+                fragmentTransaction.replace(R.id.container, mainFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
         }
     }
 
